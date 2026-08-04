@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Three-Mesh Current Analysis Assessment</title>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+
+<style>
+.math {
+  font-family: 'Cambria Math', 'STIX Two Math', Georgia, serif;
+  font-style: italic;
+}
+.math sub, .math sup {
+  font-style: italic;
+}
+.mtext {
+  font-style: normal;
+}
+:root {
+  --primary: #0284c7;
+  --primary-dark: #0369a1;
+  --bg: #f8fafc;
+  --card-bg: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --border: #e2e8f0;
+  --radius: 12px;
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+  background: var(--bg);
+  color: var(--text-main);
+  line-height: 1.6;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.subtitle {
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+  font-size: 1.05rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+h2 {
+  color: var(--primary-dark);
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+}
+
+.problem-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .problem-grid {
+    grid-template-columns: 1.6fr 1fr;
+  }
+}
+
+.table-container {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+th {
+  background: #f1f5f9;
+  font-weight: 600;
+  color: var(--text-main);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+td {
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+.svg-container {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 1rem 0;
+  overflow: visible;
+}
+
+svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.wire {
+  stroke: #1e293b;
+  stroke-width: 2.5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.resistor {
+  stroke: #1e293b;
+  stroke-width: 2.5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.node {
+  fill: #1e293b;
+}
+
+.label {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  fill: #0f172a;
+}
+
+.mesh {
+  fill: none;
+  stroke: #0284c7;
+  stroke-width: 2;
+  stroke-dasharray: 6 4;
+}
+
+.meshlabel {
+  fill: #0369a1;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+  font-style: italic;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Three-Mesh Current Analysis</h1>
+  <p class="subtitle">Guided Problem Solving using Kirchhoff's Voltage Law and Cramer's Rule</p>
+</header>
+
+<div class="card">
+  <h2>Problem Statement</h2>
+  <div class="problem-grid">
+    <div>
+      <p style="margin-bottom: 1rem;">
+        Three clockwise mesh currents, <strong class="math">I<sub>A</sub></strong>, <strong class="math">I<sub>B</sub></strong>, and <strong class="math">I<sub>C</sub></strong>, are defined for the three-loop circuit shown below.
+      </p>
+      <p style="margin-bottom: 1rem;">
+        The network comprises five resistors and three independent DC voltage sources.
+      </p>
+      <p style="margin-bottom: 0.5rem;"><strong>Objectives:</strong></p>
+      <ol style="margin-left: 1.25rem; line-height: 1.8;">
+        <li>Apply Kirchhoff's Voltage Law (KVL) around each loop to formulate the governing linear equations.</li>
+        <li>Set up the system in matrix form (<span class="math"><strong>A</strong>&middot;<strong>I</strong> = <strong>V</strong></span>) and solve for <span class="math">I<sub>A</sub></span>, <span class="math">I<sub>B</sub></span>, and <span class="math">I<sub>C</sub></span> using Cramer's Rule.</li>
+        <li>Calculate the magnitude and direction of the net current flowing through each resistor (<span class="math">R<sub>1</sub></span> through <span class="math">R<sub>5</sub></span>).</li>
+      </ol>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="math">R<sub>1</sub></td><td>5&nbsp;&Omega;</td></tr>
+          <tr><td class="math">R<sub>2</sub></td><td>2&nbsp;&Omega;</td></tr>
+          <tr><td class="math">R<sub>3</sub></td><td>3&nbsp;&Omega;</td></tr>
+          <tr><td class="math">R<sub>4</sub></td><td>2&nbsp;&Omega;</td></tr>
+          <tr><td class="math">R<sub>5</sub></td><td>5&nbsp;&Omega;</td></tr>
+          <tr><td class="math">V<sub>1</sub></td><td>12&nbsp;V</td></tr>
+          <tr><td class="math">V<sub>2</sub></td><td>6&nbsp;V</td></tr>
+          <tr><td class="math">V<sub>3</sub></td><td>9&nbsp;V</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Circuit Diagram</h2>
+  <p class="subtitle" style="margin-top:-0.5rem; margin-bottom: 1.5rem;">
+    Clockwise loop direction conventions for <span class="math">I<sub>A</sub></span>, <span class="math">I<sub>B</sub></span>, and <span class="math">I<sub>C</sub></span>.
+  </p>
+
+  <div class="svg-container">
+
+
+<svg viewBox="0 0 1120 540" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto;">
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+          <polygon points="0,0 8,4 0,8" fill="#0369a1"/>
+        </marker>
+      </defs>
+
+      <!-- WIRES -->
+      <line class="wire" x1="160" y1="80" x2="260" y2="80"/>
+      <line class="wire" x1="400" y1="80" x2="650" y2="80"/>
+      <line class="wire" x1="790" y1="80" x2="970" y2="80"/>
+
+      <line class="wire" x1="160" y1="80" x2="160" y2="170"/>
+      <line class="wire" x1="160" y1="250" x2="160" y2="360"/>
+
+      <line class="wire" x1="560" y1="80" x2="560" y2="170"/>
+      <line class="wire" x1="560" y1="250" x2="560" y2="360"/>
+
+      <line class="wire" x1="970" y1="80" x2="970" y2="170"/>
+      <line class="wire" x1="970" y1="250" x2="970" y2="360"/>
+
+      <line class="wire" x1="160" y1="360" x2="260" y2="360"/>
+      <line class="wire" x1="400" y1="360" x2="650" y2="360"/>
+      <line class="wire" x1="790" y1="360" x2="970" y2="360"/>
+
+      <line class="wire" x1="160" y1="360" x2="160" y2="470"/>
+      <line class="wire" x1="970" y1="360" x2="970" y2="470"/>
+      <line class="wire" x1="160" y1="470" x2="520" y2="470"/>
+      <line class="wire" x1="600" y1="470" x2="970" y2="470"/>
+
+      <!-- RESISTORS -->
+      <polyline class="resistor" points="260,80 270,65 290,95 310,65 330,95 350,65 370,95 390,65 400,80"/>
+      <text class="label" x="330" y="45" text-anchor="middle">R₁ = 5 Ω</text>
+
+      <polyline class="resistor" points="650,80 660,65 680,95 700,65 720,95 740,65 760,95 780,65 790,80"/>
+      <text class="label" x="720" y="45" text-anchor="middle">R₂ = 2 Ω</text>
+
+      <polyline class="resistor" points="560,170 545,183 575,196 545,209 575,222 545,235 560,250"/>
+      <text class="label" x="595" y="215" text-anchor="start">R₃ = 3 Ω</text>
+
+      <polyline class="resistor" points="260,360 270,345 290,375 310,345 330,375 350,345 370,375 390,345 400,360"/>
+      <text class="label" x="330" y="330" text-anchor="middle">R₄ = 2 Ω</text>
+
+      <polyline class="resistor" points="650,360 660,345 680,375 700,345 720,375 740,345 760,375 780,345 790,360"/>
+      <text class="label" x="720" y="330" text-anchor="middle">R₅ = 5 Ω</text>
+
+      <!-- SOURCES -->
+      <circle cx="160" cy="210" r="40" fill="white" stroke="#1e293b" stroke-width="2.5"/>
+      <text class="label" x="160" y="192" text-anchor="middle">+</text>
+      <text class="label" x="160" y="235" text-anchor="middle">−</text>
+      <text class="label" x="105" y="215" text-anchor="end">V₁ = 12 V</text>
+
+      <circle cx="970" cy="210" r="40" fill="white" stroke="#1e293b" stroke-width="2.5"/>
+      <text class="label" x="970" y="192" text-anchor="middle">−</text>
+      <text class="label" x="970" y="235" text-anchor="middle">+</text>
+      <text class="label" x="1025" y="215" text-anchor="start">V₂ = 6 V</text>
+
+      <circle cx="560" cy="470" r="40" fill="white" stroke="#1e293b" stroke-width="2.5"/>
+      <text class="label" x="538" y="475" text-anchor="middle">+</text>
+      <text class="label" x="582" y="475" text-anchor="middle">−</text>
+      <text class="label" x="560" y="530" text-anchor="middle">V₃ = 9 V</text>
+
+      <!-- NODES -->
+      <circle class="node" cx="560" cy="80" r="5"/>
+      <circle class="node" cx="560" cy="360" r="5"/>
+
+      <!-- CW MESH ARROWS -->
+      <path class="mesh" d="M 400 215 A 55 55 0 1 0 355 160" marker-end="url(#arrow)"/>
+      <text class="meshlabel" x="355" y="222" text-anchor="middle">
+        I<tspan dy="5" font-size="14">A</tspan>
+      </text>
+
+      <path class="mesh" d="M 800 215 A 55 55 0 1 0 755 160" marker-end="url(#arrow)"/>
+      <text class="meshlabel" x="755" y="222" text-anchor="middle">
+        I<tspan dy="5" font-size="14">B</tspan>
+      </text>
+
+      <path class="mesh" d="M 585 410 A 32 32 0 1 0 540 410" marker-end="url(#arrow)"/>
+      <text class="meshlabel" x="560" y="402" text-anchor="middle">
+        I<tspan dy="5" font-size="14">C</tspan>
+      </text>
+    </svg>
+
+
+  </div>
+</div>
+
+</body>
+</html>
