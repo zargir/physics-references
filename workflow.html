@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CachyOS Git Workflow</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 40px auto;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: monospace;
+        }
+
+        .box {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>CachyOS → GitHub → Netlify Workflow</h1>
+
+<p>
+    This is the workflow for updating the website stored in the
+    <b>site</b> folder using the CachyOS terminal.
+</p>
+
+<div class="box">
+<h2>1. Open the website folder</h2>
+
+<pre>
+cd ~/Desktop/site
+</pre>
+
+<p>
+This is the working directory containing files such as:
+</p>
+
+<pre>
+site/
+├── index.html
+├── circuit.html
+└── other files
+</pre>
+</div>
+
+
+<div class="box">
+<h2>2. Check what changed</h2>
+
+<pre>
+git status
+</pre>
+
+<p>
+Git shows which files have been modified, added, or deleted.
+</p>
+</div>
+
+
+<div class="box">
+<h2>3. Add changes to Git</h2>
+
+<pre>
+git add .
+</pre>
+
+<p>
+This prepares all changed files for a commit.
+</p>
+</div>
+
+
+<div class="box">
+<h2>4. Create a revision snapshot</h2>
+
+<pre>
+git commit -m "Describe your changes"
+</pre>
+
+<p>
+Example:
+</p>
+
+<pre>
+git commit -m "Added electricity chapter"
+</pre>
+
+<p>
+A commit is a saved version of the project.
+</p>
+</div>
+
+
+<div class="box">
+<h2>5. Push the revision to GitHub</h2>
+
+<pre>
+git push
+</pre>
+
+<p>
+Git sends the new revision to:
+</p>
+
+<pre>
+https://github.com/zargir/physics-references
+</pre>
+
+</div>
+
+
+<div class="box">
+<h2>6. Netlify deployment</h2>
+
+<pre>
+GitHub
+   |
+   | New commit
+   ↓
+Netlify
+   |
+   | Automatic deployment
+   ↓
+https://physics-references.netlify.app/
+</pre>
+
+<p>
+After GitHub receives the push, Netlify automatically updates the live website.
+</p>
+
+</div>
+
+
+<div class="box">
+<h2>Complete update sequence</h2>
+
+<pre>
+cd ~/Desktop/site
+
+git status
+
+git add .
+
+git commit -m "Updated website"
+
+git push
+</pre>
+</div>
+
+
+<div class="box">
+<h2>Working from another machine</h2>
+
+<p>
+First download the project:
+</p>
+
+<pre>
+git clone git@github.com:zargir/physics-references.git
+</pre>
+
+<p>
+Then update normally:
+</p>
+
+<pre>
+git pull
+
+# edit files
+
+git add .
+git commit -m "New revision"
+git push
+</pre>
+
+</div>
+
+
+<p>
+End of workflow reference.
+</p>
+
+</body>
+</html>
